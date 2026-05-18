@@ -26,14 +26,18 @@ app.use(
 app.use(express.json({ limit: "1mb" }));
 
 app.get("/api/health", (_req, res) => {
+  const key = process.env.OPENROUTER_API_KEY?.trim() ?? "";
   res.json({
     ok: true,
     model: getActiveModel(),
     modelsToTry: getModelsToTry(),
-    hasApiKey: Boolean(
-      process.env.OPENROUTER_API_KEY?.trim() &&
-        !process.env.OPENROUTER_API_KEY.includes("your-key-here")
-    ),
+    hasApiKey: Boolean(key && !key.includes("your-key-here")),
+    keyHint: key ? `${key.slice(0, 10)}…${key.slice(-4)}` : null,
+    port: PORT,
+    hint:
+      "Dev UI: http://localhost:5173 (Vite). API: http://localhost:" +
+      PORT +
+      ". Prod: npm run build && npm start",
   });
 });
 
@@ -63,6 +67,16 @@ app.use(
   }
 );
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`🎬 Drama server running at http://localhost:${PORT}`);
+});
+
+server.on("error", (err: NodeJS.ErrnoException) => {
+  if (err.code === "EADDRINUSE") {
+    console.error(
+      `\n❌ Port ${PORT} is in use. Run: npm run kill-ports\n   Then: npm run dev\n`
+    );
+    process.exit(1);
+  }
+  throw err;
 });

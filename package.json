@@ -5,7 +5,8 @@
   "description": "Turn ordinary situations into absurd Bollywood-level drama",
   "scripts": {
     "install:all": "npm install && npm install --prefix server && npm install --prefix client",
-    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "kill-ports": "sh -c 'for p in 3001 5173 5174 5175; do lsof -tiTCP:$p -sTCP:LISTEN 2>/dev/null | xargs kill -9 2>/dev/null; done; true'",
+    "dev": "npm run kill-ports && concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
     "build": "npm run build --prefix server && npm run build --prefix client",
     "start": "npm run start --prefix server"
   },

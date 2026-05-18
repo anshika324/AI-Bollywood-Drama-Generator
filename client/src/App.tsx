@@ -127,7 +127,8 @@ export default function App() {
           {apiReady === false && (
             <p className="text-sm rounded-xl border border-amber-500/40 bg-amber-950/40 px-4 py-3 text-amber-100">
               ⚙️ Add your OpenRouter API key in <code className="text-gold">.env</code>{" "}
-              (see README). Server must be running on port 3001.
+              (see README). Run <code className="text-gold">npm run dev</code> (API on
+              port 3001).
             </p>
           )}
         </section>
@@ -144,7 +145,7 @@ export default function App() {
                 The writers&apos; room is screaming...
               </p>
               <p className="text-sm text-[#f5e6d3]/50 mt-2">
-                Crafting 5 scenes of pure chaos
+                Crafting scenes of pure chaos
               </p>
             </div>
           )}

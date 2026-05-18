@@ -54,9 +54,10 @@ Return JSON with this structure:
 }
 
 Requirements:
-- At least 4 characters and exactly 5 scenes (sceneIndex 1 through 5).
-- Each scene: at least 3 dialogue lines.
-- sceneIndex must be sequential integers starting at 1.`;
+- Exactly 4 characters and exactly 3 scenes (sceneIndex 1, 2, 3).
+- Each scene: exactly 3 dialogue lines (keep lines short).
+- sceneIndex must be sequential integers starting at 1.
+- Keep total JSON compact.`;
 }
 
 export function buildRegeneratePrompt(
@@ -83,7 +84,7 @@ Scenes: ${current.scenes.map((s) => `${s.sceneIndex}. ${s.title}`).join("; ")}`;
     case "scene":
       return `${base}\n\nRegenerate ONLY scene ${sceneIndex}. Return JSON: { "scene": { sceneIndex, title, description, dialogue } }`;
     case "allScenes":
-      return `${base}\n\nRegenerate ALL 5 scenes. Return JSON: { "scenes": [...] }`;
+      return `${base}\n\nRegenerate ALL 3 scenes. Return JSON: { "scenes": [...] }`;
     default:
       return base;
   }

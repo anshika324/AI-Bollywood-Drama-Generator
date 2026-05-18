@@ -69,7 +69,9 @@ cp .env.example .env
 npm run dev
 ```
 
-Open **http://localhost:5173**
+Open **http://localhost:5173** (frontend). API runs on **http://localhost:3001**.
+
+> Use **one** URL at a time: `5173` for development (`npm run dev`), or `3001` after `npm run build && npm start` (serves UI + API together). Do not mix an old server on `3001` with a new Vite on `5173`.
 
 ## Production build
 
@@ -114,9 +116,20 @@ Serves API + built frontend from **http://localhost:3001**
 
 ## AI usage disclosure (for submission)
 
-This project was built using **Cursor and Claude** :
+This project was built with **Cursor AI** as a coding assistant:
 - Architecture and file structure were planned first, then implemented module-by-module
 - Prompts in `dramaAgent.ts` were iterated for structured JSON and Bollywood tone
 - UI copy and styling were refined for a cinematic “masala” feel
 - **No API keys** are committed; reviewers use their own OpenRouter key via `.env`
 
+## Submission
+
+See **[SUBMISSION.md](./SUBMISSION.md)** for step-by-step: API key, demo video script, GitHub push, and email template.
+
+## Submission checklist
+
+- [ ] Push to a **public** GitHub repository
+- [ ] Record demo video (< 3 min), upload to YouTube/Loom (public link)
+- [ ] Email **sumeet@deepshorts.ai**
+  - **Subject:** `Assignment submission`
+  - **Body:** GitHub repo URL + demo video URL

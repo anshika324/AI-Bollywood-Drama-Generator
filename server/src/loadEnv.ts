@@ -3,14 +3,24 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-/** Load `.env` from project root (walks up from server/src or server/dist). */
+function isProjectRoot(dir: string): boolean {
+  return (
+    fs.existsSync(path.join(dir, "package.json")) &&
+    fs.existsSync(path.join(dir, "client")) &&
+    fs.existsSync(path.join(dir, "server"))
+  );
+}
+
+/** Load `.env` only from this monorepo root — never from parent folders. */
 export function loadEnv(): void {
   let dir = path.dirname(fileURLToPath(import.meta.url));
 
   for (let i = 0; i < 6; i++) {
-    const envPath = path.join(dir, ".env");
-    if (fs.existsSync(envPath)) {
-      dotenv.config({ path: envPath, override: true });
+    if (isProjectRoot(dir)) {
+      const envPath = path.join(dir, ".env");
+      if (fs.existsSync(envPath)) {
+        dotenv.config({ path: envPath, override: true });
+      }
       return;
     }
     const parent = path.dirname(dir);
@@ -18,7 +28,9 @@ export function loadEnv(): void {
     dir = parent;
   }
 
-  // npm run dev --prefix server → cwd is server/
-  dotenv.config({ path: path.resolve(process.cwd(), "../.env"), override: true });
-  dotenv.config({ path: path.resolve(process.cwd(), ".env"), override: true });
+  // Fallback when running from server/ cwd
+  const fromCwd = path.resolve(process.cwd(), "../.env");
+  if (fs.existsSync(fromCwd)) {
+    dotenv.config({ path: fromCwd, override: true });
+  }
 }
